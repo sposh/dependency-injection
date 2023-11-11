@@ -1,0 +1,21 @@
+{
+    "name": "@sposh/dependency-injection",
+    "version": "1.0.0",
+    "description": "Dependency injection library for agnostic object construction.",
+    "keywords": ["dependency injection", "dependency inversion", "inversion of control"],
+    "homepage": "https://github.com/sposh/dependency-injection/wiki",
+    "bugs": "https://github.com/sposh/dependency-injection/issues",
+    "license": "GPL-3.0-only",
+    "author": "Joshua Hewitt aka Sposh",
+    "main": "index.js",
+    "repository": "github:sposh/dependency-injection",
+    "scripts": {},
+    "config": {
+        "engine-strict": true
+    },
+    "dependencies": {},
+    "devDependencies": {},
+    "engines": {
+        "node": ">=16"
+    }
+  }
