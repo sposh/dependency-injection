@@ -4,7 +4,7 @@ test('Basic DI', async () => {
     const di = diCreator(new Map([
         [Array, new Map([
             ['Array', [Array, 'one', 'two']],
-            ['Array2', [import('../assets/ExternalArray').then(m => m.default), 'three', 'four']],
+            ['Array2', [async () => (await import('../assets/ExternalArray')).default, 'three', 'four']],
         ])],
     ]));
     expect(di(Array)('Array')).toBe(di(Array)('Array'));
