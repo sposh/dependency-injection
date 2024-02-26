@@ -14,6 +14,16 @@ const di = diCreator(new Map([
     [Map, new Map([
         ['EmptyArray', [Map]],
     ])],
+    [Object, new Map([
+        ['Array', [String]],
+        [Object, new Map([
+            ['Array', [Map]],
+            ['Undefined'],
+        ])],
+        ['Object', new Map([
+            ['Array', [Object]],
+        ])],
+    ])],
 ]));
 
 test('Basic DI', async () => {
@@ -38,6 +48,20 @@ test('Basic DI', async () => {
     expect(typeof di(Array)('Array2').at(1).then).toEqual('function');
     expect(await di(Array)('Array2').at(0)).toEqual('three');
     expect(await di(Array)('Array2').at(1)).toEqual('four');
+});
+
+test('DI levels & incorrectness', async () => {
+    expect(di('')).toBe(undefined);
+    expect(di()('')).toBe(undefined);
+    expect(di(String)('')).toBe(undefined);
+    expect(di(Array)('')).toBe(undefined);
+    expect(di(Array)()('')).toBe(undefined);
+    expect(di(Object)('Array')).toEqual(new String());
+    expect(di(Object)(Object)('Array')).toEqual(new Map());
+    expect(di(Object)(Object)('Undefined')).toBe(undefined);
+    expect(di(Object)(Array)('Array')).toBe(undefined);
+    expect(di(Object)('Object')).toBe(undefined);
+    // can't save you from trying di(Object)('Object')('Array')
 });
 
 test('DI singleton-ness', async () => {
