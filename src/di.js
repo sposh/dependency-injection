@@ -1,4 +1,3 @@
-// TODO: DTO - freeze vs getters & simplify toString
 // TODO: createFromPrototype to also overwrite getters, setters & properties
 // TODO: Use decorators/babel (also for logger, and logger as DI)
 import { createFromPrototype } from '@sposh/oop-utils';
