@@ -1,5 +1,6 @@
+// TODO: logger as DI
 // TODO: createFromPrototype to also overwrite getters, setters & properties
-// TODO: Use decorators/babel (also for logger, and logger as DI)
+// TODO: Use decorators once supported nativelly by Node (no need to pre-transpile with Babel)
 import { createFromPrototype } from '@sposh/oop-utils';
 
 export default function di(config, parentKey) { // Only one key (last) of each config key-tree per entry can be String, anything after is ignored
