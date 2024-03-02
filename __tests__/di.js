@@ -47,6 +47,8 @@ const di = diCreator(new Map([
         ['badItation', [badItation]],
         ['badItation2', [async () => (await import('./di')).badItation]],
     ])],
+    ['itation', [[iface, itation]]],
+    ['itation2', [[iface, async () => (await import('./di')).itation]]],
 ]));
 
 test('Basic DI', async () => {
@@ -63,6 +65,8 @@ test('Basic DI', async () => {
     expect(await di(Array)('Array2').at(1)).toEqual('four');
     expect(di(iface)('itation').f2()).toEqual('f2');
     expect(await di(iface)('itation2').f2()).toEqual('f2');
+    expect(di('itation').f2()).toEqual('f2');
+    expect(await di('itation2').f2()).toEqual('f2');
 });
 
 test('DI levels & incorrectness', async () => {
@@ -83,13 +87,13 @@ test('DI levels & incorrectness', async () => {
         di(iface)('badItation').f2();
         expect(true).toBe(false);
     } catch (error) {
-        expect(error.message).toEqual('[@sposh/oop-utils]factory.createFromPrototype: expected basePrototype \'[object Object]\' function \'f2\' not implemented in resolvedInstance \'[object Object]\'');
+        expect(error.message).toEqual('[@sposh/oop-utils]factory.createFromPrototype: expected basePrototype \'Object\' function \'f2\' not implemented in resolvedInstance \'Object\'');
     }
     try {
         await di(iface)('badItation2').f2();
         expect(true).toBe(false);
     } catch (error) {
-        expect(error.message).toEqual('[@sposh/oop-utils]factory.createFromPrototype: expected basePrototype \'[object Object]\' function \'f2\' not implemented in resolvedInstance \'[object Object]\'');
+        expect(error.message).toEqual('[@sposh/oop-utils]factory.createFromPrototype: expected basePrototype \'Object\' function \'f2\' not implemented in resolvedInstance \'Object\'');
     }
 });
 

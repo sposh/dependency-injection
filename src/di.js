@@ -1,5 +1,4 @@
-// TODO: logger as DI
-// TODO: createFromPrototype to also overwrite getters, setters & properties
+// TODO: Change values from arrays to objects
 // TODO: Use decorators once supported nativelly by Node (no need to pre-transpile with Babel)
 import { createFromPrototype } from '@sposh/oop-utils';
 
@@ -10,9 +9,9 @@ export default function di(config, parentKey) { // Only one key (last) of each c
         if (typeof key === 'string') {
             if (value instanceof Array) {
                 if (value[1] === false) {
-                    resolvedValue = () => createFromPrototype(parentKey, resolver(value[0]), ...value.slice(2));
+                    resolvedValue = () => parentKey ? createFromPrototype(parentKey, resolver(value[0]), ...value.slice(2)) : createFromPrototype(value[0][0], resolver(value[0][1]), ...value.slice(2));
                 } else {
-                    resolvedValue = createFromPrototype(parentKey, resolver(value[0]), ...value.slice(2));
+                    resolvedValue = parentKey ? createFromPrototype(parentKey, resolver(value[0]), ...value.slice(2)) : createFromPrototype(value[0][0], resolver(value[0][1]), ...value.slice(2));
                 }
             } // else resolvedValue stays undefined
         } else {
