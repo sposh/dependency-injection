@@ -4,27 +4,29 @@ import { createFromPrototype } from '@sposh/oop-utils';
 
 export default function di(config, parentKey) { // Only one key (last) of each config key-tree per entry can be String, anything after is ignored
     const resolvedConfig = new Map();
-    config.forEach((value, key) => {
-        let resolvedValue;
-        if (typeof key === 'string') {
-            if (value instanceof Array) {
-                if (value[1] === false) {
-                    resolvedValue = () => parentKey ? createFromPrototype(parentKey, resolver(value[0]), ...value.slice(2)) : createFromPrototype(value[0][0], resolver(value[0][1]), ...value.slice(2));
-                } else {
-                    resolvedValue = parentKey ? createFromPrototype(parentKey, resolver(value[0]), ...value.slice(2)) : createFromPrototype(value[0][0], resolver(value[0][1]), ...value.slice(2));
-                }
-            } // else resolvedValue stays undefined
-        } else {
-            resolvedValue = di(value, key);
-        }
-        resolvedConfig.set(key, resolvedValue);
-    });
     return key => {
-        const value = resolvedConfig.get(key);
-        if (!value && typeof key !== 'string') {
-            return () => value;
+        let resolvedValue = resolvedConfig.get(key);
+        if (!resolvedValue) {
+            const value = config.get(key);
+            if (value) {
+                if (typeof key === 'string') {
+                    if (value instanceof Array) {
+                        if (value[1] === false) {
+                            resolvedValue = () => parentKey ? createFromPrototype(parentKey, resolver(value[0]), ...value.slice(2)) : createFromPrototype(value[0][0], resolver(value[0][1]), ...value.slice(2));
+                        } else {
+                            resolvedValue = parentKey ? createFromPrototype(parentKey, resolver(value[0]), ...value.slice(2)) : createFromPrototype(value[0][0], resolver(value[0][1]), ...value.slice(2));
+                        }
+                    } // else resolvedValue stays undefined
+                } else {
+                    resolvedValue = di(value, key);
+                }
+                resolvedConfig.set(key, resolvedValue);
+            }
         }
-        return value?.name === 'resolvedValue' ? value() : value;
+        if (!resolvedValue && typeof key !== 'string') {
+            return () => resolvedValue;
+        }
+        return resolvedValue?.name === 'resolvedValue' ? resolvedValue() : resolvedValue;
     }
 }
 
