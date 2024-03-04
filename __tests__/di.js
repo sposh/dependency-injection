@@ -100,22 +100,30 @@ test('DI levels & incorrectness', async () => {
 test('DI singleton-ness', async () => {
     expect(di).toBe((await import('./di')).di);
     expect(di(Array)('EmptyArray')).toBe(di(Array)('EmptyArray'));
-    di(Array)('EmptyArray').push('one');
+    const emptyArray = di(Array)('EmptyArray');
+    expect(emptyArray).toBe(di(Array)('EmptyArray'));
+    emptyArray.push('one');
     expect(di(Array)('EmptyArray').at(0)).toEqual('one');
-    di(Array)('EmptyArray').push('EmptyArray');
+    emptyArray.push('EmptyArray');
     expect(di(Array)('EmptyArray').at(1)).toEqual('EmptyArray');
     expect(di(Array)('EmptyArray2')).toBe(di(Array)('EmptyArray2'));
-    await di(Array)('EmptyArray2').push('EmptyArray2');
+    const emptyArray2 = di(Array)('EmptyArray2');
+    expect(emptyArray2).toBe(di(Array)('EmptyArray2'));
+    await emptyArray2.push('EmptyArray2');
     expect(await di(Array)('EmptyArray2').at(0)).toEqual('EmptyArray2');
     expect(di(Array)('Array')).toBe(di(Array)('Array'));
-    di(Array)('Array').fill('two_b', 1, 2);
+    const array = di(Array)('Array');
+    expect(array).toBe(di(Array)('Array'));
+    array.fill('two_b', 1, 2);
     expect(di(Array)('Array').at(1)).toEqual('two_b');
-    di(Array)('Array').push('Array');
+    array.push('Array');
     expect(di(Array)('Array').at(2)).toEqual('Array');
     expect(di(Array)('Array2')).toBe(di(Array)('Array2'));
-    await di(Array)('Array2').fill('four_b', 1, 2);
+    const array2 = di(Array)('Array2');
+    expect(array2).toBe(di(Array)('Array2'));
+    await array2.fill('four_b', 1, 2);
     expect(await di(Array)('Array2').at(1)).toEqual('four_b');
-    await di(Array)('Array2').push('Array2');
+    await array2.push('Array2');
     expect(await di(Array)('Array2').at(2)).toEqual('Array2');
 });
 
