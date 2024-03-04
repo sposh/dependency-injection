@@ -1,8 +1,13 @@
 // TODO: Change values from arrays to objects
-// TODO: Use decorators once supported nativelly by Node (no need to pre-transpile with Babel)
+// TODO: Use decorators once supported natively by Node (no need to pre-transpile with Babel)
 import { createFromPrototype } from '@sposh/oop-utils';
 
-export default function di(config, parentKey) { // Only one key (last) of each config key-tree per entry can be String, anything after is ignored
+/**
+ * Only one key (last) of each config key-tree per entry can be String, anything after is ignored
+ * Non-lazy loaded (in config) classes cannot call di (as di hasn't been initialized by then)
+ * TODO Diagram
+*/
+export default function di(config, parentKey) {
     const resolvedConfig = new Map();
     return key => {
         let resolvedValue = resolvedConfig.get(key);
@@ -26,6 +31,7 @@ export default function di(config, parentKey) { // Only one key (last) of each c
         if (!resolvedValue && typeof key !== 'string') {
             return () => resolvedValue;
         }
+        if (!isSingleton || resolvedValue?.name === 'resolvedValue') console.log('****************************', isSingleton, resolvedValue?.name, resolvedValue);
         return resolvedValue?.name === 'resolvedValue' ? resolvedValue() : resolvedValue;
     }
 }

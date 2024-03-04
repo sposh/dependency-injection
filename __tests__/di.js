@@ -17,7 +17,7 @@ export const badItation = {
     f1: () => 'f1bad',
 };
 
-const di = diCreator(new Map([
+export const di = diCreator(new Map([
     [Array, new Map([
         ['EmptyArray', [ExternalArray]],
         ['EmptyArray2', [async () => (await import('./di')).default]],
@@ -98,6 +98,7 @@ test('DI levels & incorrectness', async () => {
 });
 
 test('DI singleton-ness', async () => {
+    expect(di).toBe((await import('./di')).di);
     expect(di(Array)('EmptyArray')).toBe(di(Array)('EmptyArray'));
     di(Array)('EmptyArray').push('one');
     expect(di(Array)('EmptyArray').at(0)).toEqual('one');
