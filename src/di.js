@@ -31,7 +31,6 @@ export default function di(config, parentKey) {
         if (!resolvedValue && typeof key !== 'string') {
             return () => resolvedValue;
         }
-        if (!isSingleton || resolvedValue?.name === 'resolvedValue') console.log('****************************', isSingleton, resolvedValue?.name, resolvedValue);
         return resolvedValue?.name === 'resolvedValue' ? resolvedValue() : resolvedValue;
     }
 }
