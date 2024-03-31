@@ -1,1 +1,1 @@
-export { default } from './src/di';
+export { default } from './src/di.js';
