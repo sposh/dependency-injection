@@ -1,6 +1,6 @@
 {
     "name": "@sposh/dependency-injection",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Dependency injection library for agnostic object construction.",
     "keywords": [
         "dependency injection",

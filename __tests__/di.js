@@ -1,4 +1,4 @@
-import diCreator from '..';
+import diCreator from '../index.js';
 
 export default class ExternalArray extends Array {}
 
@@ -20,13 +20,13 @@ export const badItation = {
 export const di = diCreator(new Map([
     [Array, new Map([
         ['EmptyArray', [ExternalArray]],
-        ['EmptyArray2', [async () => (await import('./di')).default]],
+        ['EmptyArray2', [async () => (await import('./di.js')).default]],
         ['Array', [ExternalArray, true, 'one', 'two']],
-        ['Array2', [async () => (await import('./di')).default, true, 'three', 'four']],
+        ['Array2', [async () => (await import('./di.js')).default, true, 'three', 'four']],
         ['EmptyArray3', [ExternalArray, false]],
-        ['EmptyArray4', [async () => (await import('./di')).default, false]],
+        ['EmptyArray4', [async () => (await import('./di.js')).default, false]],
         ['Array3', [ExternalArray, false, 'one', 'two']],
-        ['Array4', [async () => (await import('./di')).default, false, 'three', 'four']],
+        ['Array4', [async () => (await import('./di.js')).default, false, 'three', 'four']],
     ])],
     [Map, new Map([
         ['EmptyArray', [Map]],
@@ -43,12 +43,12 @@ export const di = diCreator(new Map([
     ])],
     [iface, new Map([
         ['itation', [itation]],
-        ['itation2', [async () => (await import('./di')).itation]],
+        ['itation2', [async () => (await import('./di.js')).itation]],
         ['badItation', [badItation]],
-        ['badItation2', [async () => (await import('./di')).badItation]],
+        ['badItation2', [async () => (await import('./di.js')).badItation]],
     ])],
     ['itation', [[iface, itation]]],
-    ['itation2', [[iface, async () => (await import('./di')).itation]]],
+    ['itation2', [[iface, async () => (await import('./di.js')).itation]]],
 ]));
 
 test('Basic DI', async () => {
@@ -98,7 +98,7 @@ test('DI levels & incorrectness', async () => {
 });
 
 test('DI singleton-ness', async () => {
-    expect(di).toBe((await import('./di')).di);
+    expect(di).toBe((await import('./di.js')).di);
     expect(di(Array)('EmptyArray')).toBe(di(Array)('EmptyArray'));
     const emptyArray = di(Array)('EmptyArray');
     expect(emptyArray).toBe(di(Array)('EmptyArray'));
